@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cp5013i2174fb"]
+
+[ext_resource type="Script" path="res://wall.gd" id="1_pgm6v"]
+[ext_resource type="Texture2D" path="res://WallStandin.png" id="2_n737k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_weo8o"]
+size = Vector2(162, 143)
+
+[node name="Wall" type="StaticBody2D"]
+position = Vector2(544, 279)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_pgm6v")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_n737k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5, -0.5)
+scale = Vector2(1.08, 1.24)
+shape = SubResource("RectangleShape2D_weo8o")

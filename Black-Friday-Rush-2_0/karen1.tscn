@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3 uid="uid://scgkb2wi8sq7"]
+
+[ext_resource type="Script" path="res://karen.gd" id="1_26wnw"]
+[ext_resource type="Texture2D" uid="uid://dkp0stun4rd5x" path="res://Karen/image-removebg-preview (1).png" id="2_vb5kl"]
+[ext_resource type="Texture2D" uid="uid://c6l3xcjtjubt5" path="res://Karen/image-removebg-preview.png" id="3_so3mt"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rl3s2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_vb5kl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_so3mt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fcf0v"]
+size = Vector2(58.5685, 69.0714)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k5ijg"]
+size = Vector2(85, 133)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jissk"]
+radius = 289.111
+
+[node name="Karen" type="CharacterBody2D"]
+collision_layer = 3
+collision_mask = 3
+platform_floor_layers = 4294901760
+script = ExtResource("1_26wnw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1.17163, 1.39282)
+scale = Vector2(0.176299, 0.151657)
+sprite_frames = SubResource("SpriteFrames_rl3s2")
+autoplay = "default"
+frame_progress = 0.595344
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.985
+
+[node name="KarenCollision" type="CollisionShape2D" parent="."]
+position = Vector2(1.03273, -2.35001)
+scale = Vector2(0.955027, 1.4)
+shape = SubResource("RectangleShape2D_fcf0v")
+
+[node name="NewTest" type="Area2D" parent="."]
+position = Vector2(5, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NewTest"]
+position = Vector2(-3.5, -3.5)
+shape = SubResource("RectangleShape2D_k5ijg")
+
+[node name="Awareness_" type="Area2D" parent="."]
+position = Vector2(1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Awareness_"]
+position = Vector2(2, 0)
+shape = SubResource("CircleShape2D_jissk")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="NewTest" to="." method="_on_new_test_body_entered"]
+[connection signal="body_exited" from="NewTest" to="." method="_on_new_test_body_exited"]
+[connection signal="body_entered" from="Awareness_" to="." method="_on_awareness__body_entered"]
+[connection signal="body_exited" from="Awareness_" to="." method="_on_awareness__body_exited"]

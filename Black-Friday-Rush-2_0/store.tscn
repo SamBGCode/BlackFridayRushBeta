@@ -1,0 +1,136 @@
+[gd_scene load_steps=16 format=3 uid="uid://rgtc4dtxte5b"]
+
+[ext_resource type="Script" path="res://manager.gd" id="1_nvk1c"]
+[ext_resource type="Texture2D" uid="uid://dw7sb26s3yjsv" path="res://Manager/Manager backside walk.png" id="1_p1jfl"]
+[ext_resource type="PackedScene" uid="uid://cx40tjkggb1tv" path="res://mypad.tscn" id="1_vun3y"]
+[ext_resource type="Script" path="res://score.gd" id="2_pvf1n"]
+[ext_resource type="Texture2D" uid="uid://btjgtj1r0te3w" path="res://Manager/Manager backside.png" id="2_w3b0p"]
+[ext_resource type="Texture2D" uid="uid://b38aoofcs7ju8" path="res://Manager/Manager front walk.png" id="3_4uawj"]
+[ext_resource type="Texture2D" uid="uid://ck6gty4oick2q" path="res://Manager/Manager front.png" id="4_erob0"]
+[ext_resource type="Texture2D" uid="uid://c1b4oc7fgxenc" path="res://Manager/Manager left side walk.png" id="5_xpeee"]
+[ext_resource type="Texture2D" uid="uid://cr8vj72pntfuv" path="res://Manager/manager left side.png" id="6_hayec"]
+[ext_resource type="Texture2D" uid="uid://dd8my8ca1dl6d" path="res://Manager/Manager right side walk.png" id="7_ugc6v"]
+[ext_resource type="Texture2D" uid="uid://tfph8yxf1xon" path="res://Manager/Manager right side.png" id="8_kcqv1"]
+[ext_resource type="Texture2D" uid="uid://bp0i74s5rarv6" path="res://GameOver.png" id="9_bt6dq"]
+[ext_resource type="Script" path="res://sanity_bar.gd" id="11_506tu"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uftjf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_p1jfl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_w3b0p")
+}],
+"loop": true,
+"name": &"back walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_4uawj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_erob0")
+}],
+"loop": true,
+"name": &"front walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_xpeee")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_hayec")
+}],
+"loop": true,
+"name": &"left walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_ugc6v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_kcqv1")
+}],
+"loop": true,
+"name": &"right walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_erob0")
+}],
+"loop": true,
+"name": &"stand still",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uj2yi"]
+size = Vector2(32.5, 42.5)
+
+[node name="store" type="Node2D"]
+
+[node name="Mypad" parent="." instance=ExtResource("1_vun3y")]
+
+[node name="Score" type="CanvasLayer" parent="Mypad"]
+script = ExtResource("2_pvf1n")
+
+[node name="Mypads" type="Label" parent="Mypad/Score"]
+offset_left = -262.0
+offset_top = -135.0
+offset_right = -222.0
+offset_bottom = -112.0
+scale = Vector2(3.76, 1)
+
+[node name="ManagerPlayer" type="CharacterBody2D" parent="."]
+y_sort_enabled = true
+platform_floor_layers = 4294967043
+script = ExtResource("1_nvk1c")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ManagerPlayer"]
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_uftjf")
+animation = &"back walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ManagerPlayer"]
+position = Vector2(-0.5, 0.5)
+scale = Vector2(0.4, 0.4)
+shape = SubResource("RectangleShape2D_uj2yi")
+
+[node name="Camera2D" type="Camera2D" parent="ManagerPlayer"]
+scale = Vector2(0.4, 0.4)
+zoom = Vector2(2, 2)
+
+[node name="GameEnd" type="Sprite2D" parent="ManagerPlayer/Camera2D"]
+visible = false
+position = Vector2(5, -188)
+scale = Vector2(2.92857, 3.13636)
+texture = ExtResource("9_bt6dq")
+
+[node name="SanityBar" type="ProgressBar" parent="ManagerPlayer"]
+offset_left = 62.0
+offset_top = -142.0
+offset_right = 267.0
+offset_bottom = -115.0
+max_value = 50.0
+value = 50.0
+show_percentage = false
+script = ExtResource("11_506tu")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ManagerPlayer/SanityBar"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = 123.0
+offset_bottom = 42.0
+theme_override_colors/default_color = Color(0.490196, 0, 0, 1)
+text = "Sanity"
+
+[node name="TakeDamage" type="Timer" parent="ManagerPlayer"]
+
+[connection signal="body_entered" from="Mypad" to="Mypad" method="_on_body_entered"]
+[connection signal="timeout" from="ManagerPlayer/TakeDamage" to="ManagerPlayer" method="_on_take_damage_timeout"]

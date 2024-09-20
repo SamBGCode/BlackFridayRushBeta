@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxr1c5frgeon6"]
+
+[ext_resource type="PackedScene" uid="uid://cx40tjkggb1tv" path="res://mypad.tscn" id="1_vgpxw"]
+
+[node name="Node" type="Node"]
+
+[node name="Mypad" parent="." instance=ExtResource("1_vgpxw")]
